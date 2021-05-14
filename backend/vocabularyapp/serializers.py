@@ -19,4 +19,4 @@ class StorySerializer(serializers.ModelSerializer):
     story_catgory_name = serializers.ReadOnlyField(source='story_category.category_name')
     class Meta:
         model = Story
-        fields = ['story_text', 'story_catgory_name']
+        fields = ['id', 'story_text', 'story_catgory_name']
