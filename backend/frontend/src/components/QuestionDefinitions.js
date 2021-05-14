@@ -16,12 +16,10 @@ const QuestionDefinition = props => {
   const [isUserCorrect, setIsUserCorrect] = useState(USER_NO_ANSWER);
   
     useEffect(() => {
-            console.log("BLLAA", USER_NO_ANSWER)
-
-            const definitionArr = props.data.other_words;
+            const definitionArr = props.data.other_words.slice(0);
             const correctWord = props.data.correct_word
  
-            const correctWordIndex = Math.floor(Math.random() * 4) 
+            const correctWordIndex = Math.floor(Math.random() * 5) 
 
             definitionArr.splice(correctWordIndex, 0, correctWord)
             console.log(definitionArr);          
@@ -51,7 +49,7 @@ const QuestionDefinition = props => {
 
 
 const nextQuestion = () => {
-  props.setQuestionStage(IMAGES_STAGE);
+  props.moveToNextPage();
 }
 const renderAnswerResponse = () => {
   if (isUserCorrect == USER_CORRECT_ANSWER){

@@ -8,11 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import {USER_NO_ANSWER, USER_CORRECT_ANSWER, USER_WRONG_ANSWER, DEFINITIONS_STAGE} from '../Const';
 
-const QuestionStory = ({ story, setQuestionStage }) => {
-
-const nextQuestion = () => {
-  setQuestionStage(DEFINITIONS_STAGE);
-}
+const QuestionStory = ({ story, moveToNextPage }) => {
 
 
 return (
@@ -20,7 +16,7 @@ return (
             <h1>{story.story_category}</h1>
             <p>{story.story_text}</p>
               <Button
-                onClick = {() => nextQuestion() } 
+                onClick = {() => moveToNextPage() } 
                 color="primary" 
                 size="large">
                 See Question

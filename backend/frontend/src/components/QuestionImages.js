@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useHistory } from "react";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import List from '@material-ui/core/List';
@@ -17,16 +17,17 @@ const QuestionImages = props => {
   const [isUserCorrect, setIsUserCorrect] = useState(USER_NO_ANSWER);
   
     useEffect(() => {
-            const definitionArr = props.data.other_words;
+            const otherWordsArr = props.data.other_words.slice(0);
             const correctWord = props.data.correct_word
  
             //randomally select the location of the correct answer
-            const correctWordIndex = Math.floor(Math.random() * 4) 
+            const correctWordIndex = Math.floor(Math.random() * 5) 
 
             //insert the correct answer to the array with the other answers
-            definitionArr.splice(correctWordIndex, 0, correctWord)
-            console.log(definitionArr);          
-            setDefinitions(definitionArr);
+            otherWordsArr.splice(correctWordIndex, 0, correctWord)
+            console.log("after");
+            console.log(otherWordsArr);          
+            setDefinitions(otherWordsArr);
             setCorrectWord(correctWord);
             setCorrectWordIndex(correctWordIndex);
             console.log(correctWordIndex);
@@ -51,18 +52,13 @@ const QuestionImages = props => {
     }
 
 
-const nextQuestion = () => {
-  props.setQuestionStage(NEXT_QUESTION);
-}
-
-
 const renderAnswerResponse = () => {
   if (isUserCorrect == USER_CORRECT_ANSWER){
     return (
       <div>
         <h3>Correct!</h3>
         <Button
-                onClick = {() => nextQuestion() } 
+                onClick = {() => props.moveToNextPage() } 
                 color="primary" 
                 size="large">
                 Continue to next question
@@ -83,7 +79,9 @@ const renderAnswerResponse = () => {
 
 return (
           <div>
-            <h1>{correctWord.word_text}</h1>
+            <img 
+                style ={{width:200, height: 200}}
+                src={correctWord.word_image_url} />
               <RadioGroup onChange={handleChange} value={selectedChoice}>
               <List>  
                       {definitionArr.map((word, idx) => 
@@ -94,9 +92,7 @@ return (
                                       <FormControlLabel 
                                       name="radio-buttons"
                                       value = {idx} control={<Radio/> }
-                                      label={<img 
-                                        style ={{width:200, height: 200}}
-                                        src={word.word_image_url} />} />
+                                      label={word.word_text} />
                                   }
                                   />
 

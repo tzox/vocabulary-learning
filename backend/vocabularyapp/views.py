@@ -15,9 +15,10 @@ class StoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
+    
     @action(methods = ['GET'], detail = True)
     def story_question(self, request, pk = None):
-        NUM_OF_OTHER_WORDS = 3
+        NUM_OF_OTHER_WORDS = 4
 
         story = get_object_or_404(Story, id = pk)
         story_serialized = StorySerializer(story, many = False)

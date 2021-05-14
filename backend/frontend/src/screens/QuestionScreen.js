@@ -13,15 +13,49 @@ export default function QuestionScreen(props) {
     const [questionStage, setQuestionStage] = useState(STORY_STAGE); 
     const [isLoading, setIsLoading] = useState(true); 
     const [questionData, setQuestionData] = useState({}); 
-    const [storiesIds, setStoriesIds] = useState([]);
-    const [currStoryId, setCurrStoryId] = useState(0);
+    const [storiesIds, setStoriesIds] = useState([1, 2]);
+    const [currStoryId, setCurrStoryId] = useState(props.match.params.id);
     const [notFound, setNotFound] = useState(false);
+    const [questionIdsArr, setQuestionIdsArr] = useState([]); 
+    const [currStoryIndex, setCurrStoryIndex] = useState(null);   
     
-    
-    useEffect(() => {
-        get_question_details(props.match.params.id);
-      });
+    // read all stories ids
+    //randomally select one and get it's question details
+    //after finishing a 
 
+    
+    //read all the available story ids in the initial load
+    useEffect(() => {
+        get_stories_ids();
+      }, []);
+
+
+    //whenever the current story index changes - read a random question for the new story
+    useEffect(() => {
+        setQuestionStage(STORY_STAGE);
+        get_question_details(currStoryId);
+      }, [currStoryId]);
+
+      const extractIds = (jsonArr) => {
+        let idsArr = [];
+        for (let i =0, n=jsonArr.length; i < n; i++){
+            const currId = jsonArr[i].id
+            idsArr.push(currId);
+        }
+        return idsArr
+    }
+
+      const get_stories_ids = () =>{
+        axios.get(`http://localhost:8000/api/stories/`)
+        .then((response) => {
+            const ids = extractIds(response.data);
+            setQuestionIdsArr(ids);
+            setCurrStoryIndex(0);
+      }
+        ).catch((error) => {
+          console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
+          })
+      }
 
 
     //   const get_stories_ids = () => {
@@ -50,6 +84,22 @@ export default function QuestionScreen(props) {
     } 
 
 
+    const nextQuestion = () => {
+        const nextQuestionId = Number(props.match.params.id) - '0' + 1; //need to replace this
+        setCurrStoryIndex(currStoryIndex + 1);
+        // const nextQuestionId = Number(props.match.params.id) - '0' + 1; //need to replace this
+        // get_question_details(nextQuestionId); //update state
+        props.history.push(`/questions/${questionIdsArr[currStoryIndex]}`) //change url
+    }
+
+    const moveToDefinitionQuestion = () => {
+        setQuestionStage(DEFINITIONS_STAGE);
+    }
+
+    const moveToImageQuestion = () => {
+        setQuestionStage(IMAGES_STAGE);
+    }
+
     function renderQuestionStage(){
         if (isLoading) {
             return <h1>Loading</h1>
@@ -63,7 +113,7 @@ export default function QuestionScreen(props) {
             return (
                 <div>
                     <h1>Please read the following story. You will be presented with questions afterwards</h1>
-                    <QuestionStory story={questionData.story} setQuestionStage={setQuestionStage}/>
+                    <QuestionStory story={questionData.story} moveToNextPage={moveToDefinitionQuestion}/>
                 </div>
             )
         }
@@ -72,7 +122,7 @@ export default function QuestionScreen(props) {
             return (
                 <div>
                     <h1>You will now be presented with a word and several definitions. Choose the correct definition</h1>
-                    <QuestionDefinition data={questionData} setQuestionStage={setQuestionStage}/>
+                    <QuestionDefinition data={questionData} moveToNextPage={moveToImageQuestion}/>
                 </div>
             )
         }
@@ -80,8 +130,9 @@ export default function QuestionScreen(props) {
         if (questionStage === IMAGES_STAGE){
             return (
                 <div>
-                    <h1>You will now be presented with a word and several images. Choose the correct image</h1>
-                    <QuestionImages data={questionData} setQuestionStage={setQuestionStage}/>
+                    <h1>Which word represents the following image?</h1>
+                    <QuestionImages data={questionData} 
+                        moveToNextPage={nextQuestion}/>
                 </div>
             )
         }
@@ -89,14 +140,19 @@ export default function QuestionScreen(props) {
         if (questionStage === NEXT_QUESTION){
             setQuestionStage(STORY_STAGE);
             const nextQuestionId = Number(props.match.params.id) - '0' + 1; //need to replace this
-            get_question_details(nextQuestionId);
-            props.history.push(`/questions/${nextQuestionId}`)
+            // const nextQuestionId = Number(props.match.params.id) - '0' + 1; //need to replace this
+            // get_question_details(nextQuestionId); //update state
+            props.history.push(`/questions/${nextQuestionId}`) //change url
+
+
         }
 
 
         
         console.log(questionStage);
     }
+
+
 
 
     return(
