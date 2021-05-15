@@ -5,7 +5,6 @@ from vocabularyapp import views
 
 router = routers.DefaultRouter()
 router.register(r'stories', views.StoryViewSet, 'stories')
-router.register(r'words', views.WordViewSet, 'words')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

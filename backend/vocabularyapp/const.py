@@ -1,0 +1,1 @@
+NUM_OF_OTHER_WORDS = 4

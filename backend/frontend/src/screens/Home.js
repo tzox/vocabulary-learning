@@ -12,20 +12,22 @@ const Home = props => {
     const [showMainScreen, setShowMainScreen] = useState(true);  //is first question
     const [isLoading, setIsLoading] = useState(true);
 
+
+
+
     useEffect(() => {
-        const get_stories_ids = () =>{
-            if (questionIdsArr.length) return;
-            console.log("inside get stories ids");
-            axios.get(`http://localhost:8000/api/stories/`)
-            .then((response) => {
-                const ids = extractIds(response.data);
-                setQuestionIdsArr(ids);
-                setIsLoading(false);
-          }
-            ).catch((error) => {
-              console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
-              })
-          }
+  
+      const get_stories_ids = () =>{
+        if (questionIdsArr.length) return;
+        axios.get(`http://localhost:8000/api/stories/`)
+        .then((response) => {
+            setQuestionIdsArr(response.data);
+            setIsLoading(false);
+      }
+        ).catch((error) => {
+          console.log(error);
+          })
+      }
 
         get_stories_ids();
       }, [questionIdsArr]);
@@ -35,20 +37,6 @@ const Home = props => {
         setShowMainScreen(true);
         setCurrStoryIndex(currStoryIndex + 1);
       }
-
-      //extracts just the ids
-      //also possible to make a speical api call that will return just the ids (maybe use Paging if database is large)
-      const extractIds = (jsonArr) => {
-          let idsArr = [];
-          for (let i =0, n=jsonArr.length; i < n; i++){
-              const currId = jsonArr[i].id
-              idsArr.push(currId);
-          }
-          return idsArr
-      }
-
-
-
 
 
       const renderMessage= () => {
@@ -67,10 +55,21 @@ const Home = props => {
       }
 
 
+      const getButtonText = () =>{
+        if (currStoryIndex === 0)
+            return "Start Playing";
+        if (currStoryIndex >= questionIdsArr.length)
+            return "Start from the beginning";
+        if (currStoryIndex)
+            return "Continue to next story";
+        
+      }
+
+
       const renderMain = () => {
           if (showMainScreen){
             return (
-                <Container component="main" maxWidth="l" style={{display: "flex",
+                <Container component="main" maxWidth="xl" fullWidth style={{display: "flex",
                                         flexDirection: 'column',
                                         justifyContent: "center",
                                         alignItems: "center"}}>
@@ -79,15 +78,16 @@ const Home = props => {
                         onClick = {() => onStartClick()}
                         color="primary" 
                         variant="outlined"
+                        disabled = {isLoading}
                         size="large">
-                        Click here to start
+                        {getButtonText()}
                     </Button>
                 </Container>
             )
           }
 
           return (
-            <Container component="main" maxWidth="l">
+            <Container component="main" maxWidth="xl" fullWidth>
                  <QuestionScreen storyId = {questionIdsArr[currStoryIndex]}
                  continueToNextQuestion={continueToNextQuestion} />
             </Container>

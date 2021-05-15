@@ -17,9 +17,13 @@ const QuestionDefinition = props => {
   const [correctWordIndex, setCorrectWordIndex] = useState(0);      
   const [isUserCorrect, setIsUserCorrect] = useState(USER_NO_ANSWER);
   
+  const { moveToNextPage } = props;
+  const { random_question } = props.data;
+  const { other_words, correct_word } = random_question;
+
     useEffect(() => {
-            const definitionArr = props.data.other_words.slice(0); //copy the other words array so we won't edit it
-            const correctWord = props.data.correct_word
+            const definitionArr = other_words.slice(0); //copy the other words array so we won't edit it
+            const correctWord = correct_word
 
             //randomly choose an index for the right answer
             const correctWordIndex = Math.floor(Math.random() * 5) 
@@ -29,7 +33,7 @@ const QuestionDefinition = props => {
             setCorrectWord(correctWord);
             setCorrectWordIndex(correctWordIndex);
 
-      }, [props.data]);
+      }, [other_words, correct_word]);
 
 
     const handleChange = event => {
@@ -47,7 +51,7 @@ const QuestionDefinition = props => {
 
 
     const nextQuestion = () => {
-      props.moveToNextPage();
+      moveToNextPage();
     }
 
     const renderAnswerResponse = () => {
@@ -86,26 +90,25 @@ const QuestionDefinition = props => {
     <Container component="main">
       <h3>{correctWord.word_text}</h3>
         <RadioGroup onChange={handleChange} value={selectedChoice}>
-        <List>  
-          {definitionArr.map((word, idx) => 
-              (
-                  <ListItem alignItems="flex-start"  key ={idx}>
-                      <ListItemText
-                      primary={
-                          <FormControlLabel 
-                          name="radio-buttons"
-                          value = {idx} control={<Radio />} 
-                          label={word.word_definition} />
-                      }
-                      />
-                  </ListItem>
-              )
-          )}
-        </List>
+          <List>  
+            {definitionArr.map((word, idx) => 
+                (
+                    <ListItem alignItems="flex-start"  key ={idx}>
+                        <ListItemText
+                        primary={
+                            <FormControlLabel 
+                            name="radio-buttons"
+                            value = {idx} control={<Radio />} 
+                            label={word.word_definition} />
+                        }
+                        />
+                    </ListItem>
+                )
+            )}
+          </List>
         </RadioGroup>
         {renderSendButton()}
-
-        <p>{renderAnswerResponse()}</p>
+        {renderAnswerResponse()}
     </Container>
   )
 }

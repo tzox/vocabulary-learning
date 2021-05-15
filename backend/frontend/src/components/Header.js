@@ -9,9 +9,9 @@ const Header = (props) => {
     <React.Fragment>
         <AppBar position="relative" style={{backgroundColor: 'green'}}>
             <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
-                {props.title}
-            </Typography>
+                <Typography variant="h6" color="inherit" noWrap>
+                    {props.title}
+                </Typography>
             </Toolbar>
         </AppBar>  
     </React.Fragment>

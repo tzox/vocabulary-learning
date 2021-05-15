@@ -16,16 +16,14 @@ const QuestionScreen = (props) => {
     //whenever the current story index changes - read a random question for the new story
     useEffect(() => {
         const get_question_details = id => {
-            axios.get(`http://localhost:8000/api/stories/${props.storyId}/random_question/`)
+            axios.get(`http://localhost:8000/api/stories/${props.storyId}/`)
             .then((response) => {
-                console.log(response);
                 setQuestionData(response.data);
                 setIsLoading(false);
           }
             ).catch((error) => {
                 setNotFound(true);
                 setIsLoading(false);
-              console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
               })
         } 
         get_question_details(props.storyId);
@@ -61,7 +59,7 @@ const QuestionScreen = (props) => {
 
         return(
             <div>
-                <p>Current story category: {questionData.story.story_category_name}</p>
+                <p>Current story category: {questionData.story_category_name}</p>
                 {renderQuestionStage()}
             </div>
         )
@@ -72,7 +70,7 @@ const QuestionScreen = (props) => {
             return (
                 <div>
                     <h3>Please read the following story. You will be presented with questions afterwards</h3>
-                    <QuestionStory story={questionData.story} moveToNextPage={moveToDefinitionQuestion}/>
+                    <QuestionStory story={questionData} moveToNextPage={moveToDefinitionQuestion}/>
                 </div>
             )
         }

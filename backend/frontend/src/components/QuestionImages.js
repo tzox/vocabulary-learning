@@ -17,10 +17,15 @@ const QuestionImages = props => {
   const [correctWordIndex, setCorrectWordIndex] = useState(0);      
   const [isUserCorrect, setIsUserCorrect] = useState(USER_NO_ANSWER);
 
+  const { moveToNextPage } = props;
+  const { random_question } = props.data;
+  const { other_words, correct_word } = random_question;
+
+
 
     useEffect(() => {
-            const otherWordsArr = props.data.other_words.slice(0); //create a copy so not to edit the prop array
-            const correctWord = props.data.correct_word
+            const otherWordsArr = other_words.slice(0); //create a copy so not to edit the prop array
+            const correctWord = correct_word
  
             //randomly select the location of the correct answer
             const correctWordIndex = Math.floor(Math.random() * 5) 
@@ -31,7 +36,7 @@ const QuestionImages = props => {
             setCorrectWord(correctWord);
             setCorrectWordIndex(correctWordIndex); 
 
-      }, [props.data]);
+      }, [other_words, correct_word]);
 
 
     const handleChange = event => {
@@ -62,10 +67,10 @@ const renderAnswerResponse = () => {
       <div>
         <Alert severity="success">Correct!</Alert>
         <Button
-                onClick = {() => props.moveToNextPage() } 
+                onClick = {() => moveToNextPage() } 
                 color="primary" 
                 size="large">
-                Continue to next question
+                Next Question
             </Button>
       </div>
     )
@@ -79,7 +84,7 @@ const renderAnswerResponse = () => {
 }
 
 return (
-        <Container component="main" maxWidth="l" style={{display: "flex",
+        <Container component="main" maxWidth="lg" style={{display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"}}>
@@ -107,7 +112,7 @@ return (
               </List>
               </RadioGroup>
               {renderSendButton()}
-              <p>{renderAnswerResponse()}</p>
+              {renderAnswerResponse()}
           </Container>
 )
 }

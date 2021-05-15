@@ -7,7 +7,8 @@ class Category(models.Model):
         return self.category_name
 
 
-############
+
+
 class SubCategory(models.Model):
     subcategory_name = models.CharField(max_length = 100)
 
@@ -15,22 +16,20 @@ class SubCategory(models.Model):
         return self.subcategory_name
 
 
-#############
+
+
 class Story(models.Model):
     story_category = models.ForeignKey(Category, models.SET_NULL,
                                         blank=True,
                                         null=True)
     story_text = models.TextField()
 
-    # @property
-    # def words(self):
-    #     return Word.objects.filter(stories=self)
-
     def __str__(self):
         return str(self.story_category) +": " + self.story_text[0:50] + "..."
 
 
-##########
+
+
 class Word(models.Model):
     word_text= models.CharField(max_length = 100)
     word_definition = models.TextField()

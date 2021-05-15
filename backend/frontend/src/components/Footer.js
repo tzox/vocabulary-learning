@@ -5,14 +5,14 @@ const Footer = (props) => {
 
     const get_stories_completed_text = () =>{
         if (props.stories)
-        return (<p>You finished {props.stories} stories!</p>)
+            return `You finished ${props.stories} stories!`
     }
 
     return (
         <footer style={{marginTop: 'auto'}}>
-            <Container maxWidth="sm">
+            <Container>
             <Typography variant="subtitle1" align="center" color="textPrimary" component="p">
-            {get_stories_completed_text()}
+                {get_stories_completed_text()}
             </Typography>
         </Container>
         </footer>

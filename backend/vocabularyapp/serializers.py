@@ -2,8 +2,7 @@ from rest_framework import serializers
 from .models import Story, Word
 from rest_framework import status
 from rest_framework.response import Response
-
-
+from .const import NUM_OF_OTHER_WORDS
 
 class WordSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,37 +10,41 @@ class WordSerializer(serializers.ModelSerializer):
         fields = ['word_text', 'word_definition', 'word_image_url']
 
 
-
-
-class StorySerializer(serializers.ModelSerializer):
-    # words = WordSerializer(many=True)
-    
-    story_category_name = serializers.ReadOnlyField(source='story_category.category_name')
+class StoryIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
-        fields = ['id', 'story_text', 'story_category_name']
+        fields = ['id']
 
-    # random_question = serializers.SerializerMethodField()
 
-    # def get_random_question(self, obj):
-    #     NUM_OF_OTHER_WORDS = 4
+    #overwrite to_representation to return a list of ids and not a list of json
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # representation['likes'] = instance.liked_by.count()
 
-    #     story = get_object_or_404(Story, id = pk)
-    #     story_serialized = StorySerializer(story, many = False)
+        return representation['id']
 
-    #     #randomally choose one word from the words associated with this story
-    #     correct_word = story.word_set.order_by("?").first() #not efficient - change if have time
-    #     correct_word_serialized = WordSerializer(correct_word, many = False)
+
+class StoryQuestionSerializer(serializers.ModelSerializer):
+    random_question = serializers.SerializerMethodField()    
+    story_category_name = serializers.ReadOnlyField(source='story_category.category_name')
+
+    class Meta:
+        model = Story
+        fields = ['id', 'story_text', 'story_category_name', 'random_question']
+
+    def get_random_question(self, obj):
+
+        #randomally choose one word from the words associated with this story
+        correct_word = obj.word_set.order_by("?").first() #not efficient - change if have time
+        correct_word_serialized = WordSerializer(correct_word)
+
+        #randomally choose 3 other words from the entire dictionary
+        other_words = Word.objects.exclude(id = correct_word.id).order_by("?")[:NUM_OF_OTHER_WORDS]  #not efficient - change if have time
+        other_words_serialized = WordSerializer(other_words, many = True)
         
-    #     #randomally choose 3 other words from the entire dictionary
-    #     other_words = Word.objects.exclude(id = correct_word.id).order_by("?")[:NUM_OF_OTHER_WORDS]  #not efficient - change if have time
-    #     other_words_serialized = WordSerializer(other_words, many = True)
+        output_serialized = {
+                            "correct_word": correct_word_serialized.data,
+                            "other_words": other_words_serialized.data,
+        }
 
-
-    #     output_serialized = {
-    #                         "story": story_serialized.data,
-    #                         "correct_word": correct_word_serialized.data,
-    #                         "other_words": other_words_serialized.data,
-    #     }
-
-    #     return output_serialized
+        return output_serialized
