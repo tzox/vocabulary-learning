@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useHistory } from "react";
+import React, { useState, useEffect } from "react";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import List from '@material-ui/core/List';
@@ -15,23 +15,21 @@ const QuestionImages = props => {
   const [correctWord, setCorrectWord] = useState({});
   const [correctWordIndex, setCorrectWordIndex] = useState(0);      
   const [isUserCorrect, setIsUserCorrect] = useState(USER_NO_ANSWER);
-  
+
+
     useEffect(() => {
-            const otherWordsArr = props.data.other_words.slice(0);
+            const otherWordsArr = props.data.other_words.slice(0); //create a copy so not to edit the prop array
             const correctWord = props.data.correct_word
  
-            //randomally select the location of the correct answer
+            //randomly select the location of the correct answer
             const correctWordIndex = Math.floor(Math.random() * 5) 
 
             //insert the correct answer to the array with the other answers
             otherWordsArr.splice(correctWordIndex, 0, correctWord)
-            console.log("after");
             console.log(otherWordsArr);          
             setDefinitions(otherWordsArr);
             setCorrectWord(correctWord);
-            setCorrectWordIndex(correctWordIndex);
-            console.log(correctWordIndex);
-            console.log(correctWord);    
+            setCorrectWordIndex(correctWordIndex); 
 
       }, []);
 

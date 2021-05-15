@@ -4,7 +4,7 @@ import QuestionImages from '../components/QuestionImages';
 import QuestionDefinition from "../components/QuestionDefinitions";
 import { STORY_STAGE, DEFINITIONS_STAGE, IMAGES_STAGE, NEXT_QUESTION } from "../Const"
 import axios from 'axios';
-
+import { useHistory, useParams } from "react-router-dom";
 
 
 
@@ -13,49 +13,49 @@ export default function QuestionScreen(props) {
     const [questionStage, setQuestionStage] = useState(STORY_STAGE); 
     const [isLoading, setIsLoading] = useState(true); 
     const [questionData, setQuestionData] = useState({}); 
-    const [storiesIds, setStoriesIds] = useState([1, 2]);
-    const [currStoryId, setCurrStoryId] = useState(props.match.params.id);
+    // const [currStoryId, setCurrStoryId] = useState(props.match.params.id);
     const [notFound, setNotFound] = useState(false);
-    const [questionIdsArr, setQuestionIdsArr] = useState([]); 
     const [currStoryIndex, setCurrStoryIndex] = useState(null);   
-    
+    const history = useHistory();
+    const params = useParams();
+
     // read all stories ids
-    //randomally select one and get it's question details
+    //randomly select one and get it's question details
     //after finishing a 
 
     
     //read all the available story ids in the initial load
-    useEffect(() => {
-        get_stories_ids();
-      }, []);
+    // useEffect(() => {
+    //     get_stories_ids();
+    //   }, []);
 
 
     //whenever the current story index changes - read a random question for the new story
     useEffect(() => {
-        setQuestionStage(STORY_STAGE);
-        get_question_details(currStoryId);
-      }, [currStoryId]);
+        // setQuestionStage(STORY_STAGE);
+        get_question_details(params.id);
+      }, []);
 
-      const extractIds = (jsonArr) => {
-        let idsArr = [];
-        for (let i =0, n=jsonArr.length; i < n; i++){
-            const currId = jsonArr[i].id
-            idsArr.push(currId);
-        }
-        return idsArr
-    }
+    //   const extractIds = (jsonArr) => {
+    //     let idsArr = [];
+    //     for (let i =0, n=jsonArr.length; i < n; i++){
+    //         const currId = jsonArr[i].id
+    //         idsArr.push(currId);
+    //     }
+    //     return idsArr
+    // }
 
-      const get_stories_ids = () =>{
-        axios.get(`http://localhost:8000/api/stories/`)
-        .then((response) => {
-            const ids = extractIds(response.data);
-            setQuestionIdsArr(ids);
-            setCurrStoryIndex(0);
-      }
-        ).catch((error) => {
-          console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
-          })
-      }
+    //   const get_stories_ids = () =>{
+    //     axios.get(`http://localhost:8000/api/stories/`)
+    //     .then((response) => {
+    //         const ids = extractIds(response.data);
+    //         setQuestionIdsArr(ids);
+    //         setCurrStoryIndex(0);
+    //   }
+    //     ).catch((error) => {
+    //       console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
+    //       })
+    //   }
 
 
     //   const get_stories_ids = () => {
@@ -85,11 +85,12 @@ export default function QuestionScreen(props) {
 
 
     const nextQuestion = () => {
-        const nextQuestionId = Number(props.match.params.id) - '0' + 1; //need to replace this
+        const nextQuestionId = Number(params.id) - '0' + 1; //need to replace this
         setCurrStoryIndex(currStoryIndex + 1);
         // const nextQuestionId = Number(props.match.params.id) - '0' + 1; //need to replace this
         // get_question_details(nextQuestionId); //update state
-        props.history.push(`/questions/${questionIdsArr[currStoryIndex]}`) //change url
+        history.push('', {userAnswered: true}) //change url
+        
     }
 
     const moveToDefinitionQuestion = () => {
@@ -139,7 +140,7 @@ export default function QuestionScreen(props) {
 
         if (questionStage === NEXT_QUESTION){
             setQuestionStage(STORY_STAGE);
-            const nextQuestionId = Number(props.match.params.id) - '0' + 1; //need to replace this
+            const nextQuestionId = Number(params.id) - '0' + 1; //need to replace this
             // const nextQuestionId = Number(props.match.params.id) - '0' + 1; //need to replace this
             // get_question_details(nextQuestionId); //update state
             props.history.push(`/questions/${nextQuestionId}`) //change url
