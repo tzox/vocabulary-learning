@@ -16,7 +16,6 @@ const Question = props => {
   const [correctWord, setCorrectWord] = useState({});
   const [correctWordIndex, setCorrectWordIndex] = useState(0);      
   const [isUserCorrect, setIsUserCorrect] = useState(USER_NO_ANSWER);
-  
   const { instructionText, moveToNextPage, questionType, choiceField } = props;
   const { random_question } = props.data;
   const { other_words, correct_word } = random_question;
@@ -95,31 +94,32 @@ const Question = props => {
     }
   }
 
-  return (
-    <Container component="main">
-        <h3>{instructionText}</h3>
-        {renderQuestionType()}
-            <RadioGroup onChange={handleChange} value={selectedChoice}>
-            <List>  
-                {wordArr.map((word, idx) => 
-                    (
-                        <ListItem alignItems="flex-start"  key ={idx}>
-                            <ListItemText
-                            primary={
-                                <FormControlLabel 
-                                name="radio-buttons"
-                                value = {idx} control={<Radio />} 
-                                label={word[choiceField]} />}
-                            />
-                        </ListItem>
-                    )
-                )}
-            </List>
-            </RadioGroup>
-            {renderSendButton()}
-            {renderAnswerResponse()}
-    </Container>
-  )
+
+    return (
+        <div>
+            <h3>{instructionText}</h3>
+            {renderQuestionType()}
+                <RadioGroup onChange={handleChange} value={selectedChoice}>
+                <List>  
+                    {wordArr.map((word, idx) => 
+                        (
+                            <ListItem alignItems="flex-start"  key ={idx}>
+                                <ListItemText
+                                primary={
+                                    <FormControlLabel 
+                                    name="radio-buttons"
+                                    value = {idx} control={<Radio />} 
+                                    label={word[choiceField]} />}
+                                />
+                            </ListItem>
+                        )
+                    )}
+                </List>
+                </RadioGroup>
+                {renderSendButton()}
+                {renderAnswerResponse()}
+        </div>
+    )
 }
 
 export default Question;

@@ -3,7 +3,7 @@ import QuestionStory from '../components/QuestionStory'
 import Question from '../components/Question';
 import { STORY_STAGE, DEFINITIONS_STAGE, IMAGES_STAGE, QUESTION_DEFINITIONS, QUESTION_IMAGE } from "../Const"
 import axios from 'axios';
-
+import Container from '@material-ui/core/Container';
 
 
 const QuestionScreen = (props) => {
@@ -11,7 +11,6 @@ const QuestionScreen = (props) => {
     const [isLoading, setIsLoading] = useState(true); 
     const [questionData, setQuestionData] = useState({}); 
     const [notFound, setNotFound] = useState(false);
-
 
     const generateRandomQuestion = () => {
         axios.get(`http://localhost:8000/api/stories/${props.storyId}/`)
@@ -43,7 +42,12 @@ const QuestionScreen = (props) => {
         setQuestionStage(DEFINITIONS_STAGE);
     }
 
+
+    //I decided to generate a new random question before continuing to the image question
+    //If I use the same question generated before - the answer appears in the previous question
+    //and it seems quite easy
     const moveToImageQuestion = () => {
+        setIsLoading(true);
         generateRandomQuestion();
         setQuestionStage(IMAGES_STAGE);
     }
@@ -60,10 +64,10 @@ const QuestionScreen = (props) => {
         }
 
         return(
-            <div>
-                <p>Current story category: {questionData.story_category_name}</p>
+            <Container>
+                <p>{`Current story category: ${questionData.story_category_name}`}</p>
                 {renderQuestionStage()}
-            </div>
+            </Container>
         )
     }
 
