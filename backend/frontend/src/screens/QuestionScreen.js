@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import QuestionStory from '../components/QuestionStory'
 import QuestionImages from '../components/QuestionImages';
 import QuestionDefinition from "../components/QuestionDefinitions";
-import { STORY_STAGE, DEFINITIONS_STAGE, IMAGES_STAGE, NEXT_QUESTION } from "../Const"
+import { STORY_STAGE, DEFINITIONS_STAGE, IMAGES_STAGE } from "../Const"
 import axios from 'axios';
 
 
 
-export default function QuestionScreen(props) {
+const QuestionScreen = (props) => {
     const [questionStage, setQuestionStage] = useState(STORY_STAGE); 
     const [isLoading, setIsLoading] = useState(true); 
     const [questionData, setQuestionData] = useState({}); 
@@ -15,23 +15,24 @@ export default function QuestionScreen(props) {
 
     //whenever the current story index changes - read a random question for the new story
     useEffect(() => {
+        const get_question_details = id => {
+            axios.get(`http://localhost:8000/api/stories/${props.storyId}/random_question/`)
+            .then((response) => {
+                console.log(response);
+                setQuestionData(response.data);
+                setIsLoading(false);
+          }
+            ).catch((error) => {
+                setNotFound(true);
+                setIsLoading(false);
+              console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
+              })
+        } 
         get_question_details(props.storyId);
-      }, []);
+      }, [props]);
 
 
-    const get_question_details = id => {
-        axios.get(`http://localhost:8000/api/stories/${props.storyId}/story_question/`)
-        .then((response) => {
-            console.log(response);
-            setQuestionData(response.data);
-            setIsLoading(false);
-      }
-        ).catch((error) => {
-            setNotFound(true);
-            setIsLoading(false);
-          console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
-          })
-    } 
+
 
 
     const nextQuestion = () => {
@@ -60,13 +61,13 @@ export default function QuestionScreen(props) {
 
         return(
             <div>
-                <p>Current story category: {questionData.story.story_catgory_name}</p>
+                <p>Current story category: {questionData.story.story_category_name}</p>
                 {renderQuestionStage()}
             </div>
         )
     }
 
-    function renderQuestionStage(){
+    const renderQuestionStage = () => {
         if (questionStage === STORY_STAGE) {
             return (
                 <div>
@@ -104,3 +105,5 @@ export default function QuestionScreen(props) {
     )
 }
 
+
+export default QuestionScreen;

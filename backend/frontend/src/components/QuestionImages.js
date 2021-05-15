@@ -6,8 +6,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
-
-import {USER_NO_ANSWER, USER_CORRECT_ANSWER, USER_WRONG_ANSWER, IMAGES_STAGE, STORY_STAGE, NEXT_QUESTION} from '../Const';
+import Container from '@material-ui/core/Container';
+import {USER_NO_ANSWER, USER_CORRECT_ANSWER, USER_WRONG_ANSWER } from '../Const';
 
 const QuestionImages = props => {
   const [selectedChoice, setSelectedChoice] = useState(0);
@@ -31,7 +31,7 @@ const QuestionImages = props => {
             setCorrectWord(correctWord);
             setCorrectWordIndex(correctWordIndex); 
 
-      }, []);
+      }, [props.data]);
 
 
     const handleChange = event => {
@@ -39,8 +39,6 @@ const QuestionImages = props => {
     };
 
     const handleVote = () => {
-      console.log(selectedChoice);
-      console.log(correctWordIndex);
       if (selectedChoice === correctWordIndex) {
         setIsUserCorrect(USER_CORRECT_ANSWER);
       }
@@ -51,7 +49,7 @@ const QuestionImages = props => {
 
 
 const renderAnswerResponse = () => {
-  if (isUserCorrect == USER_CORRECT_ANSWER){
+  if (isUserCorrect === USER_CORRECT_ANSWER){
     return (
       <div>
         <h3>Correct!</h3>
@@ -65,19 +63,22 @@ const renderAnswerResponse = () => {
     )
   }
 
-  if (isUserCorrect == USER_WRONG_ANSWER){
+  if (isUserCorrect === USER_WRONG_ANSWER){
     return (
       <div>
         <h3>Wrong! Try again</h3>
       </div>
     )
   }
-
 }
 
 return (
-          <div>
+        <Container component="main" maxWidth="l" style={{display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"}}>
             <img 
+                alt="describe this"
                 style ={{width:200, height: 200}}
                 src={correctWord.word_image_url} />
               <RadioGroup onChange={handleChange} value={selectedChoice}>
@@ -106,7 +107,7 @@ return (
                 Send Answer
             </Button>
               <p>{renderAnswerResponse()}</p>
-          </div>
+          </Container>
 )
 
 }

@@ -13,14 +13,27 @@ const Home = props => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        const get_stories_ids = () =>{
+            if (questionIdsArr.length) return;
+            console.log("inside get stories ids");
+            axios.get(`http://localhost:8000/api/stories/`)
+            .then((response) => {
+                const ids = extractIds(response.data);
+                setQuestionIdsArr(ids);
+                setIsLoading(false);
+          }
+            ).catch((error) => {
+              console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
+              })
+          }
+
         get_stories_ids();
-      }, []);
+      }, [questionIdsArr]);
 
 
       const continueToNextQuestion = () => {
         setShowMainScreen(true);
         setCurrStoryIndex(currStoryIndex + 1);
-
       }
 
       //extracts just the ids
@@ -34,25 +47,13 @@ const Home = props => {
           return idsArr
       }
 
-      const get_stories_ids = () =>{
-        if (questionIdsArr.length) return;
-        console.log("inside get stories ids");
-        axios.get(`http://localhost:8000/api/stories/`)
-        .then((response) => {
-            const ids = extractIds(response.data);
-            setQuestionIdsArr(ids);
-            setIsLoading(false);
-      }
-        ).catch((error) => {
-          console.log(error.name + " " + error.response.status + ": " + error.response.data.detail);
-          })
-      }
+
 
 
 
       const renderMessage= () => {
-        if (!isLoading && questionIdsArr.length == 0) return (<h1>No stories were found</h1>);
-        if (currStoryIndex == 0) return (<h1>Welcome! Want to start learning?</h1>);  
+        if (!isLoading && questionIdsArr.length === 0) return (<h1>No stories were found</h1>);
+        if (currStoryIndex === 0) return (<h1>Welcome! Want to start learning?</h1>);  
         if (currStoryIndex >= questionIdsArr.length) return (<h1>You played all the stories! Want to start over?</h1>);
         if (currStoryIndex) return (<h1>Good Job! Want to try another story?</h1>);
       }
@@ -66,11 +67,13 @@ const Home = props => {
       }
 
 
-
       const renderMain = () => {
           if (showMainScreen){
             return (
-                <Container component="main" maxWidth="l">
+                <Container component="main" maxWidth="l" style={{display: "flex",
+                                        flexDirection: 'column',
+                                        justifyContent: "center",
+                                        alignItems: "center"}}>
                     {renderMessage()}
                     <Button
                         onClick = {() => onStartClick()}

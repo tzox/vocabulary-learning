@@ -16,7 +16,7 @@ class WordSerializer(serializers.ModelSerializer):
 class StorySerializer(serializers.ModelSerializer):
     # words = WordSerializer(many=True)
     
-    story_catgory_name = serializers.ReadOnlyField(source='story_category.category_name')
+    story_category_name = serializers.ReadOnlyField(source='story_category.category_name')
     class Meta:
         model = Story
-        fields = ['id', 'story_text', 'story_catgory_name']
+        fields = ['id', 'story_text', 'story_category_name']
