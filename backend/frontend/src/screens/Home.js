@@ -12,9 +12,6 @@ const Home = props => {
     const [showMainScreen, setShowMainScreen] = useState(true);  //is first question
     const [isLoading, setIsLoading] = useState(true);
 
-
-
-
     useEffect(() => {
   
       //get list of all the available stories ids

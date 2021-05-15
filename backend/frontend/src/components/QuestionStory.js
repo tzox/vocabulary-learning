@@ -5,7 +5,6 @@ const QuestionStory = (props) => {
   const { story, moveToNextPage } = props;
   const { story_category, story_text } = story;
   
-
   return (
             <div>
               <h1>{story_category}</h1>
@@ -20,6 +19,5 @@ const QuestionStory = (props) => {
             </div>
   )
 }
-
 
 export default QuestionStory;

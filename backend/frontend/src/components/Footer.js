@@ -10,7 +10,7 @@ const Footer = (props) => {
     }
 
     return (
-        <footer>
+        <footer style={{marginTop: "50px"}}>
             <Container>
             <Typography variant="subtitle1" align="center" color="textPrimary" component="p">
                 {get_stories_completed_text()}

@@ -6,34 +6,35 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
-import {USER_NO_ANSWER, USER_CORRECT_ANSWER, USER_WRONG_ANSWER} from '../Const';
+import {USER_NO_ANSWER, USER_CORRECT_ANSWER, USER_WRONG_ANSWER, QUESTION_DEFINITIONS, QUESTION_IMAGE} from '../Const';
 import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/Alert';
 
-const QuestionDefinition = props => {
-  const [selectedChoice, setSelectedChoice] = useState(0);
-  const [definitionArr, setDefinitions] = useState([]);
+const Question = props => {
+  const [selectedChoice, setSelectedChoice] = useState(null);
+  const [wordArr, setWordArr] = useState([]);
   const [correctWord, setCorrectWord] = useState({});
   const [correctWordIndex, setCorrectWordIndex] = useState(0);      
   const [isUserCorrect, setIsUserCorrect] = useState(USER_NO_ANSWER);
   
-  const { moveToNextPage } = props;
+  const { instructionText, moveToNextPage, questionType, choiceField } = props;
   const { random_question } = props.data;
   const { other_words, correct_word } = random_question;
 
+
     useEffect(() => {
-            const definitionArr = other_words.slice(0); //copy the other words array so we won't edit it
+            const wordArr = other_words.slice(0); //copy the other words array so we won't edit it
             const correctWord = correct_word
 
             //randomly choose an index for the right answer
             const correctWordIndex = Math.floor(Math.random() * 5) 
 
-            definitionArr.splice(correctWordIndex, 0, correctWord)       
-            setDefinitions(definitionArr);
+            wordArr.splice(correctWordIndex, 0, correctWord)       
+            setWordArr(wordArr);
             setCorrectWord(correctWord);
             setCorrectWordIndex(correctWordIndex);
 
-      }, [other_words, correct_word]);
+      }, [other_words, correct_word, questionType]);
 
 
     const handleChange = event => {
@@ -50,12 +51,22 @@ const QuestionDefinition = props => {
     }
 
 
+    const renderQuestionType = () => {
+        if (questionType === QUESTION_DEFINITIONS)
+            return <h3>{`Word: ${correctWord.word_text}`}</h3> 
+        if (questionType === QUESTION_IMAGE)
+            return <img alt="describe this" style ={{width:256, height: 256}}
+                    src={correctWord.word_image_url} />         
+    }
+
     const nextQuestion = () => {
-      moveToNextPage();
+        setIsUserCorrect(USER_NO_ANSWER);
+        setSelectedChoice(null);
+        moveToNextPage();
     }
 
     const renderAnswerResponse = () => {
-      if (isUserCorrect === USER_CORRECT_ANSWER){
+      if (isUserCorrect === USER_CORRECT_ANSWER)
         return (
           <div>
             <Alert severity="success">Correct!</Alert>
@@ -67,13 +78,11 @@ const QuestionDefinition = props => {
                 </Button>
           </div>
         )
-      }
+      
 
-  if (isUserCorrect === USER_WRONG_ANSWER){
-    return (
-        <Alert severity="error">Wrong! Try again</Alert>
-    )
-  }
+  if (isUserCorrect === USER_WRONG_ANSWER)
+    return <Alert severity="error">Wrong! Try again</Alert>
+
 }
 
 
@@ -88,30 +97,29 @@ const QuestionDefinition = props => {
 
   return (
     <Container component="main">
-      <h3>Word: {correctWord.word_text}</h3>
-        <RadioGroup onChange={handleChange} value={selectedChoice}>
-          <List>  
-            {definitionArr.map((word, idx) => 
-                (
-                    <ListItem alignItems="flex-start"  key ={idx}>
-                        <ListItemText
-                        primary={
-                            <FormControlLabel 
-                            name="radio-buttons"
-                            value = {idx} control={<Radio />} 
-                            label={word.word_definition} />
-                        }
-                        />
-                    </ListItem>
-                )
-            )}
-          </List>
-        </RadioGroup>
-        {renderSendButton()}
-        {renderAnswerResponse()}
+        <h3>{instructionText}</h3>
+        {renderQuestionType()}
+            <RadioGroup onChange={handleChange} value={selectedChoice}>
+            <List>  
+                {wordArr.map((word, idx) => 
+                    (
+                        <ListItem alignItems="flex-start"  key ={idx}>
+                            <ListItemText
+                            primary={
+                                <FormControlLabel 
+                                name="radio-buttons"
+                                value = {idx} control={<Radio />} 
+                                label={word[choiceField]} />}
+                            />
+                        </ListItem>
+                    )
+                )}
+            </List>
+            </RadioGroup>
+            {renderSendButton()}
+            {renderAnswerResponse()}
     </Container>
   )
 }
 
-
-export default QuestionDefinition;
+export default Question;

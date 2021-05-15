@@ -10,5 +10,7 @@ export const DEFINITIONS_STAGE = 1;
 export const IMAGES_STAGE = 2;
 export const MAIN_SCREEN = 3;
 
+export const QUESTION_DEFINITIONS = 0;
+export const QUESTION_IMAGE = 1;
 
 

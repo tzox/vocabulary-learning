@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import QuestionStory from '../components/QuestionStory'
-import QuestionImages from '../components/QuestionImages';
-import QuestionDefinition from "../components/QuestionDefinitions";
-import { STORY_STAGE, DEFINITIONS_STAGE, IMAGES_STAGE } from "../Const"
+import Question from '../components/Question';
+import { STORY_STAGE, DEFINITIONS_STAGE, IMAGES_STAGE, QUESTION_DEFINITIONS, QUESTION_IMAGE } from "../Const"
 import axios from 'axios';
 
 
@@ -77,20 +76,22 @@ const QuestionScreen = (props) => {
 
         if (questionStage === DEFINITIONS_STAGE) {
             return (
-                <div>
-                    <h3>Choose the correct definition</h3>
-                    <QuestionDefinition data={questionData} moveToNextPage={moveToImageQuestion}/>
-                </div>
-            )
-        }
-
+                    <Question data={questionData} 
+                        moveToNextPage={moveToImageQuestion}
+                        instructionText="Choose the correct definition"
+                        choiceField="word_definition"
+                        questionType = {QUESTION_DEFINITIONS}
+                        />
+                )
+            }
         if (questionStage === IMAGES_STAGE){
             return (
-                <div>
-                    <h3>Choose the word the image represents</h3>
-                    <QuestionImages data={questionData} 
-                        moveToNextPage={nextQuestion}/>
-                </div>
+                <Question data={questionData} 
+                    moveToNextPage={nextQuestion}
+                    instructionText="Choose the word the image represents"
+                    choiceField="word_text"
+                    questionType = {QUESTION_IMAGE}
+                />
             )
         }
     }
