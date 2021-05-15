@@ -5,7 +5,6 @@ import { STORY_STAGE, DEFINITIONS_STAGE, IMAGES_STAGE, QUESTION_DEFINITIONS, QUE
 import axios from 'axios';
 import Container from '@material-ui/core/Container';
 
-
 const QuestionScreen = (props) => {
     const [questionStage, setQuestionStage] = useState(STORY_STAGE); 
     const [isLoading, setIsLoading] = useState(true); 
@@ -13,7 +12,7 @@ const QuestionScreen = (props) => {
     const [notFound, setNotFound] = useState(false);
 
     const generateRandomQuestion = () => {
-        axios.get(`http://localhost:8000/api/stories/${props.storyId}/`)
+        axios.get(`http://127.0.0.1:8000/api/stories/${props.storyId}/`)
         .then((response) => {
             setQuestionData(response.data);
             setIsLoading(false);
@@ -28,10 +27,6 @@ const QuestionScreen = (props) => {
     useEffect(() => {
         generateRandomQuestion();
       }, [props.storyId]);
-
-
-
-
 
     const nextQuestion = () => {
         setQuestionStage(STORY_STAGE);
@@ -53,15 +48,9 @@ const QuestionScreen = (props) => {
     }
 
 
-
     const renderMain = () => {
-        if (isLoading) {
-            return <h1>Loading</h1>
-        }
-
-        if (notFound) {
-            return <h1>Story Not Found...</h1>
-        }
+        if (isLoading) return <h1>Loading</h1>
+        if (notFound) return <h1>Story Not Found...</h1>
 
         return(
             <Container>
@@ -102,7 +91,6 @@ const QuestionScreen = (props) => {
             )
         }
     }
-
 
     return(
         <div>

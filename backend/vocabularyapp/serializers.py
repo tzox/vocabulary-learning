@@ -4,12 +4,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from .const import NUM_OF_OTHER_WORDS
 
+"""
+Serializer to return a word: the text, definition and url image
+"""
 class WordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Word
         fields = ['word_text', 'word_definition', 'word_image_url']
-
-
 
 """
 Serializer to return a list of stories ids
@@ -18,7 +19,6 @@ class StoryIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = ['id']
-
 
     #overwrite to_representation to return a list of ids and not a list of json
     def to_representation(self, instance):

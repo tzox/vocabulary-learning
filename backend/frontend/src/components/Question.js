@@ -7,7 +7,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import {USER_NO_ANSWER, USER_CORRECT_ANSWER, USER_WRONG_ANSWER, QUESTION_DEFINITIONS, QUESTION_IMAGE} from '../Const';
-import Container from '@material-ui/core/Container';
 import Alert from '@material-ui/lab/Alert';
 
 const Question = props => {
@@ -26,7 +25,7 @@ const Question = props => {
             const correctWord = correct_word
 
             //randomly choose an index for the right answer
-            const correctWordIndex = Math.floor(Math.random() * 5) 
+            const correctWordIndex = Math.floor(Math.random() * (wordArr.length + 1)) 
 
             wordArr.splice(correctWordIndex, 0, correctWord)       
             setWordArr(wordArr);
@@ -100,9 +99,9 @@ const Question = props => {
             <h3>{instructionText}</h3>
             {renderQuestionType()}
                 <RadioGroup onChange={handleChange} value={selectedChoice}>
-                <List>  
-                    {wordArr.map((word, idx) => 
-                        (
+                    <List>  
+                        {wordArr.map((word, idx) => 
+                            (
                             <ListItem alignItems="flex-start"  key ={idx}>
                                 <ListItemText
                                 primary={
@@ -112,9 +111,9 @@ const Question = props => {
                                     label={word[choiceField]} />}
                                 />
                             </ListItem>
-                        )
-                    )}
-                </List>
+                            )
+                        )}
+                    </List>
                 </RadioGroup>
                 {renderSendButton()}
                 {renderAnswerResponse()}

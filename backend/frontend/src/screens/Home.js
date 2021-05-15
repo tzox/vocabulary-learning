@@ -13,11 +13,10 @@ const Home = props => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-  
       //get list of all the available stories ids
       const get_stories_ids = () =>{
         if (questionIdsArr.length) return;
-        axios.get(`http://localhost:8000/api/stories/`)
+        axios.get(`http://127.0.0.1:8000/api/stories/`)
         .then((response) => {
             setQuestionIdsArr(response.data);
             setIsLoading(false);
@@ -55,13 +54,9 @@ const Home = props => {
 
 
       const getButtonText = () =>{
-        if (currStoryIndex === 0)
-            return "Start Playing";
-        if (currStoryIndex >= questionIdsArr.length)
-            return "Start from the beginning";
-        if (currStoryIndex)
-            return "Continue to next story";
-        
+        if (currStoryIndex === 0) return "Start Playing";
+        if (currStoryIndex >= questionIdsArr.length) return "Start from the beginning";
+        if (currStoryIndex) return "Continue to next story";
       }
 
 
