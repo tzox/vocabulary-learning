@@ -21,8 +21,6 @@ const QuestionImages = props => {
   const { random_question } = props.data;
   const { other_words, correct_word } = random_question;
 
-
-
     useEffect(() => {
             const otherWordsArr = other_words.slice(0); //create a copy so not to edit the prop array
             const correctWord = correct_word
@@ -85,34 +83,34 @@ const renderAnswerResponse = () => {
 
 return (
         <Container component="main" maxWidth="lg" style={{display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center"}}>
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center"}}>
             <img 
-                alt="describe this"
-                style ={{width:200, height: 200}}
-                src={correctWord.word_image_url} />
-              <RadioGroup row onChange={handleChange} value={selectedChoice}>
-              <List>  
-                      {definitionArr.map((word, idx) => 
-                          (
-                              <ListItem alignItems="flex-start"  key ={idx}>
-                                  <ListItemText
-                                  primary={
-                                      <FormControlLabel 
-                                      name="radio-buttons"
-                                      value = {idx} control={<Radio/> }
-                                      label={word.word_text} />
-                                  }
-                                  />
+              alt="describe this"
+              style ={{width:256, height: 256}}
+              src={correctWord.word_image_url} />
+            <RadioGroup row onChange={handleChange} value={selectedChoice}>
+            <List>  
+                    {definitionArr.map((word, idx) => 
+                        (
+                            <ListItem alignItems="flex-start"  key ={idx}>
+                                <ListItemText
+                                primary={
+                                    <FormControlLabel 
+                                    name="radio-buttons"
+                                    value = {idx} control={<Radio/> }
+                                    label={word.word_text} />
+                                }
+                                />
 
-                              </ListItem>
-                          )
-                      )}
-              </List>
-              </RadioGroup>
-              {renderSendButton()}
-              {renderAnswerResponse()}
+                            </ListItem>
+                        )
+                    )}
+            </List>
+            </RadioGroup>
+            {renderSendButton()}
+            {renderAnswerResponse()}
           </Container>
 )
 }

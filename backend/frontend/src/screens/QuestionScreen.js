@@ -78,7 +78,7 @@ const QuestionScreen = (props) => {
         if (questionStage === DEFINITIONS_STAGE) {
             return (
                 <div>
-                    <h3>You will now be presented with a word and several definitions. Choose the correct definition</h3>
+                    <h3>Choose the correct definition</h3>
                     <QuestionDefinition data={questionData} moveToNextPage={moveToImageQuestion}/>
                 </div>
             )
@@ -87,7 +87,7 @@ const QuestionScreen = (props) => {
         if (questionStage === IMAGES_STAGE){
             return (
                 <div>
-                    <h3>Which word represents the following image?</h3>
+                    <h3>Choose the word the image represents</h3>
                     <QuestionImages data={questionData} 
                         moveToNextPage={nextQuestion}/>
                 </div>

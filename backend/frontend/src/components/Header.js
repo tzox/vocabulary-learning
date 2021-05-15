@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar';
 import React from "react";
 
 const Header = (props) => {
-    
     return (
     <React.Fragment>
         <AppBar position="relative" style={{backgroundColor: 'green'}}>

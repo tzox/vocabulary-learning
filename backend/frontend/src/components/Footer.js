@@ -3,13 +3,14 @@ import Container from '@material-ui/core/Container';
 
 const Footer = (props) => {
 
+    //only show number of completed stories if greater than 0
     const get_stories_completed_text = () =>{
         if (props.stories)
             return `You finished ${props.stories} stories!`
     }
 
     return (
-        <footer style={{marginTop: 'auto'}}>
+        <footer>
             <Container>
             <Typography variant="subtitle1" align="center" color="textPrimary" component="p">
                 {get_stories_completed_text()}

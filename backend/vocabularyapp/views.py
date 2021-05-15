@@ -2,6 +2,13 @@ from rest_framework import viewsets
 from .serializers import StoryIdSerializer, StoryQuestionSerializer
 from .models import Story
 
+"""
+Our dictionary application requires two functionalities:
+1. retrieve a list of all the stories ids - for us to loop through 
+2. retreive a random question associated with a specific story
+
+Because we only require GET methods - I decided to go with ReadOnlyModelViewSet
+"""
 
 
 class StoryViewSet(viewsets.ReadOnlyModelViewSet):

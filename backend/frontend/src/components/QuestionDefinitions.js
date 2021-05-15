@@ -88,7 +88,7 @@ const QuestionDefinition = props => {
 
   return (
     <Container component="main">
-      <h3>{correctWord.word_text}</h3>
+      <h3>Word: {correctWord.word_text}</h3>
         <RadioGroup onChange={handleChange} value={selectedChoice}>
           <List>  
             {definitionArr.map((word, idx) => 

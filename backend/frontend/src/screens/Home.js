@@ -17,6 +17,7 @@ const Home = props => {
 
     useEffect(() => {
   
+      //get list of all the available stories ids
       const get_stories_ids = () =>{
         if (questionIdsArr.length) return;
         axios.get(`http://localhost:8000/api/stories/`)
@@ -33,6 +34,7 @@ const Home = props => {
       }, [questionIdsArr]);
 
 
+      //continuing to the next question means moving the index of our stories id array
       const continueToNextQuestion = () => {
         setShowMainScreen(true);
         setCurrStoryIndex(currStoryIndex + 1);
@@ -69,10 +71,9 @@ const Home = props => {
       const renderMain = () => {
           if (showMainScreen){
             return (
-                <Container component="main" maxWidth="xl" fullWidth style={{display: "flex",
-                                        flexDirection: 'column',
-                                        justifyContent: "center",
-                                        alignItems: "center"}}>
+                <Container component="main" maxWidth="xl" fullWidth 
+                            style={{display: "flex", flexDirection: 'column',
+                                    justifyContent: "center", alignItems: "center"}}>
                     {renderMessage()}
                     <Button
                         onClick = {() => onStartClick()}

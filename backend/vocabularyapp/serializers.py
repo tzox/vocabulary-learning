@@ -10,6 +10,10 @@ class WordSerializer(serializers.ModelSerializer):
         fields = ['word_text', 'word_definition', 'word_image_url']
 
 
+
+"""
+Serializer to return a list of stories ids
+"""
 class StoryIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
@@ -19,11 +23,11 @@ class StoryIdSerializer(serializers.ModelSerializer):
     #overwrite to_representation to return a list of ids and not a list of json
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        # representation['likes'] = instance.liked_by.count()
-
         return representation['id']
 
-
+"""
+Serializer that given a story, generated a random question
+"""
 class StoryQuestionSerializer(serializers.ModelSerializer):
     random_question = serializers.SerializerMethodField()    
     story_category_name = serializers.ReadOnlyField(source='story_category.category_name')
