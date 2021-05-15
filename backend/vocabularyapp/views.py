@@ -8,13 +8,13 @@ from rest_framework.response import Response
 from django.shortcuts import render,get_object_or_404
 
 
-class StoryViewSet(viewsets.ReadOnlyModelViewSet):
+class StoryViewSet(viewsets.ModelViewSet):
     """
     A simple ViewSet for viewing stories
     """
     queryset = Story.objects.select_related('story_category').all()
     serializer_class = StorySerializer
-
+    http_method_names = ['get']
     
     @action(methods = ['GET'], detail = True)
     def random_question(self, request, pk = None):
@@ -42,14 +42,13 @@ class StoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 
-class WordViewSet(viewsets.ReadOnlyModelViewSet):
+class WordViewSet(viewsets.ModelViewSet):
     """
     A simple ViewSet for viewing words and their associated categories
     """
     queryset = Word.objects.select_related('word_category').all()
     serializer_class = WordSerializer
-
-
+    http_method_names = ['get']
 # class QuestionViewSet(viewsets.ReadOnlyModelViewSet):
 #     """
 #     A simple ViewSet for viewing stories

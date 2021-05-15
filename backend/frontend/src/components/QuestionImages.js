@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
 import {USER_NO_ANSWER, USER_CORRECT_ANSWER, USER_WRONG_ANSWER } from '../Const';
 
 const QuestionImages = props => {
@@ -25,8 +26,7 @@ const QuestionImages = props => {
             const correctWordIndex = Math.floor(Math.random() * 5) 
 
             //insert the correct answer to the array with the other answers
-            otherWordsArr.splice(correctWordIndex, 0, correctWord)
-            console.log(otherWordsArr);          
+            otherWordsArr.splice(correctWordIndex, 0, correctWord)         
             setDefinitions(otherWordsArr);
             setCorrectWord(correctWord);
             setCorrectWordIndex(correctWordIndex); 
@@ -47,12 +47,20 @@ const QuestionImages = props => {
       }
     }
 
+    const renderSendButton = () =>{
+        if (isUserCorrect !== USER_CORRECT_ANSWER) {
+          return (<Button
+          onClick = {() => handleVote() } color="primary" size="large">
+          Send Answer
+      </Button>)
+        }
+      }
 
 const renderAnswerResponse = () => {
   if (isUserCorrect === USER_CORRECT_ANSWER){
     return (
       <div>
-        <h3>Correct!</h3>
+        <Alert severity="success">Correct!</Alert>
         <Button
                 onClick = {() => props.moveToNextPage() } 
                 color="primary" 
@@ -65,9 +73,7 @@ const renderAnswerResponse = () => {
 
   if (isUserCorrect === USER_WRONG_ANSWER){
     return (
-      <div>
-        <h3>Wrong! Try again</h3>
-      </div>
+        <Alert severity="error">Wrong! Try again</Alert>
     )
   }
 }
@@ -81,7 +87,7 @@ return (
                 alt="describe this"
                 style ={{width:200, height: 200}}
                 src={correctWord.word_image_url} />
-              <RadioGroup onChange={handleChange} value={selectedChoice}>
+              <RadioGroup row onChange={handleChange} value={selectedChoice}>
               <List>  
                       {definitionArr.map((word, idx) => 
                           (
@@ -100,16 +106,10 @@ return (
                       )}
               </List>
               </RadioGroup>
-              <Button
-                onClick = {() => handleVote() } 
-                color="primary" 
-                size="large">
-                Send Answer
-            </Button>
+              {renderSendButton()}
               <p>{renderAnswerResponse()}</p>
           </Container>
 )
-
 }
 
 

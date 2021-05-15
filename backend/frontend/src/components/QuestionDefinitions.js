@@ -8,6 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import {USER_NO_ANSWER, USER_CORRECT_ANSWER, USER_WRONG_ANSWER} from '../Const';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
 
 const QuestionDefinition = props => {
   const [selectedChoice, setSelectedChoice] = useState(0);
@@ -53,7 +54,7 @@ const QuestionDefinition = props => {
       if (isUserCorrect === USER_CORRECT_ANSWER){
         return (
           <div>
-            <h3>Correct!</h3>
+            <Alert severity="success">Correct!</Alert>
             <Button
                     onClick = {() => nextQuestion() } 
                     color="primary" 
@@ -66,12 +67,20 @@ const QuestionDefinition = props => {
 
   if (isUserCorrect === USER_WRONG_ANSWER){
     return (
-      <div>
-        <h3>Wrong! Try again</h3>
-      </div>
+        <Alert severity="error">Wrong! Try again</Alert>
     )
   }
 }
+
+
+  const renderSendButton = () =>{
+    if (isUserCorrect !== USER_CORRECT_ANSWER) {
+      return (<Button
+      onClick = {() => handleVote() } color="primary" size="large">
+      Send Answer
+  </Button>)
+    }
+  }
 
   return (
     <Container component="main">
@@ -94,12 +103,8 @@ const QuestionDefinition = props => {
           )}
         </List>
         </RadioGroup>
-        <Button
-          onClick = {() => handleVote() } 
-          color="primary" 
-          size="large">
-          Send Answer
-      </Button>
+        {renderSendButton()}
+
         <p>{renderAnswerResponse()}</p>
     </Container>
   )
