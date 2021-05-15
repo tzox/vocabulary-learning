@@ -55,4 +55,7 @@ npm run
 python manage.py runserver
 ```
 
-### Enter 127.0.0.1:3000 on your browser 
+### On your browser enter the following url:
+```bash
+http://127.0.0.1:3000/
+```
