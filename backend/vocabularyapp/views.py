@@ -12,7 +12,7 @@ class StoryViewSet(viewsets.ReadOnlyModelViewSet):
     """
     A simple ViewSet for viewing stories
     """
-    queryset = Story.objects.all()
+    queryset = Story.objects.select_related('story_category').all()
     serializer_class = StorySerializer
 
     
@@ -44,9 +44,9 @@ class StoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 class WordViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    A simple ViewSet for viewing stories and their associated words.
+    A simple ViewSet for viewing words and their associated categories
     """
-    queryset = Word.objects.all()
+    queryset = Word.objects.select_related('word_category').all()
     serializer_class = WordSerializer
 
 

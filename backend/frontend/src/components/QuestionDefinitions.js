@@ -18,16 +18,12 @@ const QuestionDefinition = props => {
     useEffect(() => {
             const definitionArr = props.data.other_words.slice(0);
             const correctWord = props.data.correct_word
- 
             const correctWordIndex = Math.floor(Math.random() * 5) 
 
-            definitionArr.splice(correctWordIndex, 0, correctWord)
-            console.log(definitionArr);          
+            definitionArr.splice(correctWordIndex, 0, correctWord)       
             setDefinitions(definitionArr);
             setCorrectWord(correctWord);
             setCorrectWordIndex(correctWordIndex);
-            console.log(correctWordIndex);
-            console.log(correctWord);    
 
       }, []);
 
@@ -78,7 +74,7 @@ const renderAnswerResponse = () => {
 
 return (
           <div>
-            <h1>{correctWord.word_text}</h1>
+            <h3>{correctWord.word_text}</h3>
               <RadioGroup onChange={handleChange} value={selectedChoice}>
               <List>  
                       {definitionArr.map((word, idx) => 

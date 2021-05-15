@@ -8,6 +8,7 @@ export const USER_WRONG_ANSWER = 2;
 export const STORY_STAGE = 0;
 export const DEFINITIONS_STAGE = 1;
 export const IMAGES_STAGE = 2;
-export const NEXT_QUESTION = 3;
+export const MAIN_SCREEN = 3;
+
 
 
