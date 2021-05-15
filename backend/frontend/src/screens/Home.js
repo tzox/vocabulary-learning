@@ -68,7 +68,7 @@ const Home = props => {
       const renderMain = () => {
           if (showMainScreen){
             return (
-                <Container component="main" maxWidth="xl" fullWidth 
+                <Container component="main" maxWidth="xl" fixed 
                             style={{display: "flex", flexDirection: 'column',
                                     justifyContent: "center", alignItems: "center"}}>
                     {renderMessage()}
@@ -85,7 +85,7 @@ const Home = props => {
           }
 
           return (
-            <Container component="main" maxWidth="xl" fullWidth>
+            <Container component="main" maxWidth="xl" fixed>
                  <QuestionScreen storyId = {questionIdsArr[currStoryIndex]}
                  continueToNextQuestion={continueToNextQuestion} />
             </Container>

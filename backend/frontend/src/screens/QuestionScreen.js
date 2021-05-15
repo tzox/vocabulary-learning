@@ -12,21 +12,23 @@ const QuestionScreen = (props) => {
     const [questionData, setQuestionData] = useState({}); 
     const [notFound, setNotFound] = useState(false);
 
+
+    const generateRandomQuestion = () => {
+        axios.get(`http://localhost:8000/api/stories/${props.storyId}/`)
+        .then((response) => {
+            setQuestionData(response.data);
+            setIsLoading(false);
+      }
+        ).catch((error) => {
+            setNotFound(true);
+            setIsLoading(false);
+          })
+    } 
+
     //whenever the current story index changes - read a random question for the new story
     useEffect(() => {
-        const get_question_details = id => {
-            axios.get(`http://localhost:8000/api/stories/${props.storyId}/`)
-            .then((response) => {
-                setQuestionData(response.data);
-                setIsLoading(false);
-          }
-            ).catch((error) => {
-                setNotFound(true);
-                setIsLoading(false);
-              })
-        } 
-        get_question_details(props.storyId);
-      }, [props]);
+        generateRandomQuestion();
+      }, [props.storyId]);
 
 
 
@@ -42,6 +44,7 @@ const QuestionScreen = (props) => {
     }
 
     const moveToImageQuestion = () => {
+        generateRandomQuestion();
         setQuestionStage(IMAGES_STAGE);
     }
 
